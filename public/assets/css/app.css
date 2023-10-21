@@ -1,0 +1,33 @@
+.sidex .drawer{
+    width: 100px;
+}
+
+.dash .navbar{
+    /* background-color: #000; */
+    min-height: 0;
+    height: 48px;
+}
+
+.dash .input{
+    height: 30px;
+}
+
+.active{
+    background-color: black;
+    color: #fff;
+}
+
+.tb-absen th{
+    font-size: 1rem;
+}
+
+.auth-layout{
+    background-image: url('../img/auth-bg.png');
+    background-size: cover;
+}
+
+@media (max-width: 768px) {
+  body {
+    overflow: hidden;
+  }
+}

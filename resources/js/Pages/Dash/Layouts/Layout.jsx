@@ -1,0 +1,146 @@
+import { Link } from "@inertiajs/react";
+import {
+    AiFillCarryOut,
+    AiOutlineAppstore,
+    AiFillAppstore,
+    AiOutlineCheckSquare,
+} from "react-icons/ai";
+import { BiLogOut, BiSolidLogOut } from "react-icons/bi";
+import Navbar from "./Navbar";
+import { React, useState, useEffect } from "react";
+
+export default function Layout({ children }) {
+    const currentPath = window.location.pathname;
+    // const [count, setCount] = useState(0)
+    // useEffect(() => {
+    //     let interval = setInterval(() => {
+    //         setCount((count) => count + 1)
+    //     }, 1000)
+
+    //     return function(){
+    //         clearInterval(interval);
+    //     }
+    // }, []);
+    return (
+        <main>
+            <div className="flex sidex">
+                <div className="drawer">
+                    <input
+                        id="my-drawer"
+                        type="checkbox"
+                        className="drawer-toggle"
+                    />
+                    <div className="flex">
+                        <div className="flex flex-col">
+                            <label
+                                htmlFor="my-drawer"
+                                className="btn bg-white drawer-button font-bold hover:bg-white outline-none border-none"
+                            >
+                                <div className="avatar">
+                                    <div className="w-[35px] rounded-full">
+                                        <img src="https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auhref=format&fit=crop&w=1470&q=80" />
+                                    </div>
+                                </div>
+                            </label>
+                            <ul className="flex flex-col justify-center items-center">
+                                <a href="/">
+                                    <li
+                                        className={`p-4 mt-5 ${
+                                            currentPath === "/" ? "active" : ""
+                                        } tooltip tooltip-right mt-5`}
+                                        data-tip="Dashboard"
+                                    >
+                                        <AiOutlineAppstore size={35} />
+                                    </li>
+                                </a>
+                                <a href="/absen">
+                                    <li
+                                        className={`p-4
+                                        ${
+                                            currentPath === "/absen"
+                                                ? "active"
+                                                : ""
+                                        }
+                                    tooltip tooltip-right`}
+                                        data-tip="Absen"
+                                    >
+                                        <AiOutlineCheckSquare size={35} />
+                                    </li>
+                                </a>
+                                <a href="/test">
+                                    <li
+                                        className={`p-4
+                                            ${
+                                                currentPath === "/test"
+                                                    ? "active"
+                                                    : ""
+                                            }
+                                        tooltip tooltip-right`}
+                                        data-tip="Log out"
+                                    >
+                                        <BiLogOut size={35} />
+                                    </li>
+                                </a>
+                            </ul>
+                        </div>
+                    </div>
+                    <div className="drawer-side z-10">
+                        <label
+                            htmlFor="my-drawer"
+                            className="drawer-overlay"
+                        ></label>
+                        <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
+                            <div className="pl-4 flex items-center mb-5">
+                                <div className="avatar online">
+                                    <div className="w-[50px] rounded-full">
+                                        <img src="https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auhref=format&fit=crop&w=1470&q=80" />
+                                    </div>
+                                </div>
+                                <div className="flex flex-col pl-2">
+                                    <h1 className="font-[800]">Sigma</h1>
+                                    <span className="text-[0.6rem] text-gray-500">
+                                        Admin
+                                    </span>
+                                </div>
+                            </div>
+                            <li
+                                className={`${
+                                    currentPath === "/" ? "active" : ""
+                                }`}
+                            >
+                                <a href="/">
+                                    <AiFillAppstore size={35} />
+                                    <span>Dashboard</span>
+                                </a>
+                            </li>
+                            <li
+                                className={
+                                    currentPath === "/absen" ? "active" : ""
+                                }
+                            >
+                                <a href="/absen">
+                                    <AiFillCarryOut size={35} />
+                                    <span>Absensi</span>
+                                </a>
+                            </li>
+                            <li
+                                className={
+                                    currentPath === "/test" ? "active" : ""
+                                }
+                            >
+                                <a href="/test">
+                                    <BiSolidLogOut size={35} />
+                                    <span>Log Out</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div className="flex flex-col w-full">
+                    <Navbar />
+                    <article className="p-5">{children}</article>
+                </div>
+            </div>
+        </main>
+    );
+}
