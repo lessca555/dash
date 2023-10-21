@@ -22,8 +22,9 @@
 }
 
 .auth-layout{
-    background-image: url('../img/auth-bg.png');
+    background-image: url('../img/auth-bg.webp');
     background-size: cover;
+    background-position: center;
 }
 
 @media (max-width: 768px) {
