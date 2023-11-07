@@ -1,4 +1,6 @@
-import { Link } from "@inertiajs/react";
+import { Link, Head } from "@inertiajs/react";
+import { Inertia } from "@inertiajs/inertia";
+
 import {
     AiFillCarryOut,
     AiOutlineAppstore,
@@ -21,8 +23,14 @@ export default function Layout({ children }) {
     //         clearInterval(interval);
     //     }
     // }, []);
+
+    const handleLogout = () => {
+        Inertia.post(route("logout")); // Mengirim permintaan POST ke rute logout
+    };
+
     return (
         <main>
+            <Head title="Dashboard" />
             <div className="flex sidex">
                 <div className="drawer">
                     <input
@@ -43,10 +51,12 @@ export default function Layout({ children }) {
                                 </div>
                             </label>
                             <ul className="flex flex-col justify-center items-center">
-                                <a href="/">
+                                <a href="/dashboard/admin">
                                     <li
                                         className={`p-4 mt-5 ${
-                                            currentPath === "/" ? "active" : ""
+                                            currentPath === "/dashboard/admin"
+                                                ? "active"
+                                                : ""
                                         } tooltip tooltip-right mt-5`}
                                         data-tip="Dashboard"
                                     >
@@ -67,11 +77,11 @@ export default function Layout({ children }) {
                                         <AiOutlineCheckSquare size={35} />
                                     </li>
                                 </a>
-                                <a href="/test">
+                                <button type="submit" onClick={handleLogout}>
                                     <li
                                         className={`p-4
                                             ${
-                                                currentPath === "/test"
+                                                currentPath === "/logout"
                                                     ? "active"
                                                     : ""
                                             }
@@ -80,7 +90,7 @@ export default function Layout({ children }) {
                                     >
                                         <BiLogOut size={35} />
                                     </li>
-                                </a>
+                                </button>
                             </ul>
                         </div>
                     </div>
@@ -105,10 +115,12 @@ export default function Layout({ children }) {
                             </div>
                             <li
                                 className={`${
-                                    currentPath === "/" ? "active" : ""
+                                    currentPath === "/dashboard/admin"
+                                        ? "active"
+                                        : ""
                                 }`}
                             >
-                                <a href="/">
+                                <a href="/dashboard/admin">
                                     <AiFillAppstore size={35} />
                                     <span>Dashboard</span>
                                 </a>
@@ -125,13 +137,18 @@ export default function Layout({ children }) {
                             </li>
                             <li
                                 className={
-                                    currentPath === "/test" ? "active" : ""
+                                    currentPath === "/logout" ? "active" : ""
                                 }
                             >
-                                <a href="/test">
-                                    <BiSolidLogOut size={35} />
-                                    <span>Log Out</span>
-                                </a>
+                                <form>
+                                    {/* <a href="/logout">
+                                        <BiSolidLogOut size={35} />
+                                        <span>Log Out</span>
+                                    </a> */}
+                                    <button className="flex justify-center items-center">
+                                        <BiSolidLogOut size={35} /> Log Out
+                                    </button>
+                                </form>
                             </li>
                         </ul>
                     </div>

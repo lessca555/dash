@@ -1,9 +1,11 @@
 import { React, usePage } from "react";
 import Layout from "../Layouts/Layout";
+import { Link, Head } from "@inertiajs/react";
 
 const Home = () => {
     return (
         <div>
+            <Head title="Admin Dashboard" />
             <div className="content flex flex-wrap gap-5">
                 {/* <h1 className="font-bold text-5xl">Selamat Datang Sigma</h1> */}
                 <div className="card lg:w-96 w-full bg-base-100 shadow-xl">

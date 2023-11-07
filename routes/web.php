@@ -18,16 +18,18 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', [HomeController::class, 'index']);
-Route::get('/absen', [AbsenController::class, 'index']);
-Route::get('/absen/get_absen', [AbsenController::class, 'get_absen']);
-Route::get('/test', [AbsenController::class, 'test']);
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/test', [AbsenController::class, 'test']);
+
+
+// Route::get('/dashboard', function () {
+    //     return Inertia::render('Dashboard');
+    // })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/dashboard/admin', [HomeController::class, 'index'])->name('dashmin');
+    Route::get('/absen', [AbsenController::class, 'index']);
+    Route::get('/absen/get_absen', [AbsenController::class, 'get_absen']);
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

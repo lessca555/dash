@@ -1,12 +1,17 @@
 import React from "react";
 import Layout from "../Layouts/Layout";
+import { Link, Head } from "@inertiajs/react";
+
 
 const Absen = () => {
     return (
         <div>
+            <Head title="Absen" />
             <div className="content">
                 <div className="flex">
-                    <a href="/absen/get_absen" className="btn btn-neutral">Absen</a>
+                    <a href="/absen/get_absen" className="btn btn-neutral">
+                        Absen
+                    </a>
                 </div>
                 <div className="overflow-x-auto mt-6 p-10">
                     <table className="table tb-absen">
@@ -30,8 +35,12 @@ const Absen = () => {
                                 <td>Blue</td>
                                 <td>Blue.png</td>
                                 <td className="flex gap-1 flex-wrap">
-                                    <button className="btn btn-warning">Edit</button>
-                                    <button className="btn btn-error">Delete</button>
+                                    <button className="btn btn-warning">
+                                        Edit
+                                    </button>
+                                    <button className="btn btn-error">
+                                        Delete
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>

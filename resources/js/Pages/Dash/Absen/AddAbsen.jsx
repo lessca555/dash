@@ -1,83 +1,83 @@
 import { React, useRef, useEffect, useState } from "react";
 import Layout from "../Layouts/Layout";
 import SignatureCanvas from "react-signature-canvas";
+import Webcam from "react-webcam";
+import { Link, Head } from "@inertiajs/react";
+import { Inertia } from "@inertiajs/inertia";
 
 const AddAbsen = () => {
-    let videoRef = useRef(null);
-    let photoRef = useRef(null);
-    const fileInputRef = useRef(null);
-
-    const [selectedFileName, setSelectedFileName] = useState("No file chosen");
+    //location state
     const [locationInfo, setLocationInfo] = useState("");
 
-    //get access camera
+    //camera states
+    const webcamRef = useRef(null);
+    const [judul, setJudul] = useState("");
+    const [id, setId] = useState(""); // Untuk kolom id
+    const [gambar, setGambar] = useState(null);
+    const [isWebcamEnabled, setIsWebcamEnabled] = useState(true);
 
-    useEffect(() => {
-        getUserCamera();
-    }, [videoRef]);
+    //camera/webcam functions
+    const capture = () => {
+        // const imageSrc = webcamRef.current.getScreenshot();
+        // setGambar(imageSrc);
 
-    const getUserCamera = () => {
-        navigator.mediaDevices
-            .getUserMedia({
-                video: true,
-            })
-            .then((stream) => {
-                //pindahkan stream ke <video></video> tag
-                let video = videoRef.current;
-                video.srcObject = stream;
+        // Matikan kamera setelah mengambil gambar
+        // if (webcamRef.current.video) {
+        //     webcamRef.current.video.pause();
+        //     webcamRef.current.video.srcObject
+        //         .getTracks()
+        //         .forEach((track) => track.stop());
+        // }
 
-                video.play();
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        if (webcamRef.current) {
+            const imageSrc = webcamRef.current.getScreenshot();
+            setGambar(imageSrc);
+
+            // Matikan kamera
+            setIsWebcamEnabled(false);
+
+            // Kirim gambar dan nama ke server di sini
+            sendDataToServer(imageSrc);
+        }
+        // console.log(imageSrc);
     };
 
-    //ambil gambar
-    const takePicture = () => {
-        let canvas = photoRef.current;
-        let video = videoRef.current;
-        const fileInput = fileInputRef.current;
+    const dataURItoBlob = (dataURI) => {
+        // Mengurai data URI menjadi tipe dan data base64
+        const splitDataURI = dataURI.split(",");
+        const mimeType = splitDataURI[0].match(/:(.*?);/)[1];
+        const base64String = atob(splitDataURI[1]);
 
-        if (canvas && video) {
-            // Gambar dari elemen video ke elemen canvas
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            canvas
-                .getContext("2d")
-                .drawImage(video, 0, 0, canvas.width, canvas.height);
-
-            // Dapatkan Data URL dari gambar di elemen canvas
-            const imageDataUrl = canvas.toDataURL("image/jpeg"); // Anda bisa mengganti format sesuai kebutuhan
-
-            // Setel Data URL sebagai nilai dari input file
-            if (fileInput) {
-                // Simpan Data URL di state dan tampilkan nama file yang dipilih
-                setSelectedFileName("image.jpg");
-                // Anda dapat mengganti "image.jpg" dengan nama file yang sesuai
-            }
+        // Mengonversi string base64 ke Uint8Array
+        const uint8Array = new Uint8Array(base64String.length);
+        for (let i = 0; i < base64String.length; i++) {
+            uint8Array[i] = base64String.charCodeAt(i);
         }
 
-        // Menonaktifkan video setelah mengambil gambar
-        video.pause(); // Berhenti memainkan video
-        video.srcObject = null; // Menghapus sumber video
-        takePhotoButton.disabled = true; // Menonaktifkan tombol "take photo"
+        // Membuat blob dari Uint8Array
+        return new Blob([uint8Array], { type: mimeType });
     };
 
-    const handleFileInputChange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            // Simpan nama file yang dipilih di state
-            setSelectedFileName(file.name);
-        }
+    const sendDataToServer = (imageSrc) => {
+        // Konversi base64 ke Blob
+        console.log(imageSrc);
+        const imageBlob = dataURItoBlob(imageSrc);
+
+        // Membuat objek FormData dan menambahkan gambar ke dalamnya
+        const formData = new FormData();
+        formData.append("id", id);
+        formData.append("judul", judul);
+        formData.append("gambar", imageBlob, "image.jpeg"); // Ganti "image.jpeg" sesuai kebutuhan
+
+        // Mengirim formData ke server menggunakan Inertia atau metode lain
+        // Inertia.post("/post", formData).then(() => {
+        //     // Handle respons dari server jika diperlukan
+        // });
     };
 
-    //hapus gambar
-    // const clearImg = () => {
-    //     let photo = photoRef.current;
-    //     let ctx = photo.getContext("2d");
-    //     ctx.clearRect(0, 0, photo.width, photo.height);
-    // };
+    //end camera functions
+
+    //tanggal functions
 
     //Mendapatkan tanggal terkini
     const [currentDateTime, setCurrentDateTime] = useState("");
@@ -115,7 +115,9 @@ const AddAbsen = () => {
         }
     };
 
-    //lokasi
+    //end tanggal functions
+
+    //lokasi functions
     const getLocation = () => {
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(
@@ -148,40 +150,39 @@ const AddAbsen = () => {
         }
     };
 
+    //end location functions
+
     //csrf
-    const [formData, setFormData] = useState({
-        // Inisialisasi data formulir Anda di sini
-    });
+    // const [formData, setFormData] = useState({
+    //     // Inisialisasi data formulir Anda di sini
+    // });
 
-    const csrfToken = document
-        .querySelector('meta[name="csrf-token"]')
-        .getAttribute("content");
+    // const csrfToken = document
+    //     .querySelector('meta[name="csrf-token"]')
+    //     .getAttribute("content");
 
-    const handleSubmitCSRF = async (e) => {
-        e.preventDefault();
+    // const handleSubmitCSRF = async (e) => {
+    //     e.preventDefault();
 
-        // Anda dapat menambahkan CSRF token ke data formulir
-        formData._token = csrfToken;
+    //     // Anda dapat menambahkan CSRF token ke data formulir
+    //     formData._token = csrfToken;
 
-        // Kemudian kirim formulir menggunakan API atau metode yang Anda pilih
-        try {
-            // Kirim formulir ke server
-        } catch (error) {
-            // Tangani kesalahan
-        }
-    };
+    //     // Kemudian kirim formulir menggunakan API atau metode yang Anda pilih
+    //     try {
+    //         // Kirim formulir ke server
+    //     } catch (error) {
+    //         // Tangani kesalahan
+    //     }
+    // };
 
     return (
         <div>
+            <Head title="Tambah Absen" />
             <div className="flex justify-center items-center h-[100%] p-3">
                 <div>
                     <h1 className="text-2xl font-bold">Absen pegawai</h1>
-                    <form
-                        action="#"
-                        className="form-group mt-10"
-                        onSubmit={handleSubmitCSRF}
-                    >
-                        <input type="hidden" name="_token" value={csrfToken} />
+                    <form action="#" className="form-group mt-10">
+                        {/* <input type="hidden" name="_token" value={csrfToken} /> */}
                         <label>Nama</label>
                         <br />
                         <input
@@ -189,6 +190,7 @@ const AddAbsen = () => {
                             className="input input-bordered w-full"
                             value="Admin"
                             disabled
+                            onChange={(e) => setJudul(e.target.value)}
                         />
                         <br />
                         <br />
@@ -220,45 +222,32 @@ const AddAbsen = () => {
                                 get Location
                             </button>
                         </div>
+                        <br />
+                        <br />
 
                         <div className="photo">
-                            <video className="container" ref={videoRef}></video>
-                            <button
-                                type="button"
-                                onClick={takePicture}
-                                className="btn btn-success w-full"
-                            >
-                                Take Photo
-                            </button>
-                            <canvas
-                                className="container"
-                                ref={photoRef}
-                            ></canvas>
-                            <div className="flex items-center">
-                                <input
-                                    type="file"
-                                    ref={fileInputRef}
-                                    onChange={handleFileInputChange}
-                                    style={{ display: "none" }}
+                            {isWebcamEnabled ? (
+                                <Webcam
+                                    audio={false}
+                                    ref={webcamRef}
+                                    screenshotFormat="image/jpeg"
                                 />
-                                {/* <label className="btn btn-primary">
-                                    Browse
-                                    <input
-                                        type="button"
-                                        onClick={() =>
-                                            fileInputRef.current.click()
-                                        }
-                                        style={{ display: "none" }}
-                                    />
-                                </label>
-                                <div>Selected File: {selectedFileName}</div> */}
-                            </div>
-                            {/* <button
-                                onClick={clearImg}
-                                className="btn btn-error w-full text-white"
+                            ) : (
+                                <div>Kamera dimatikan</div>
+                            )}
+                            <input
+                                type="hidden" // Atribut "hidden" untuk kolom id
+                                value={id}
+                                onChange={(e) => setId(e.target.value)}
+                            />
+                            <br /> <br />
+                            <button
+                                className="btn btn-success w-full"
+                                onClick={capture}
                             >
-                                Clear Image
-                            </button> */}
+                                Capture
+                            </button>
+                            {gambar && <img src={gambar} alt="Captured" />}
                         </div>
 
                         <br />
