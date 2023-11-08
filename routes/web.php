@@ -28,8 +28,9 @@ use Inertia\Inertia;
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard/admin', [HomeController::class, 'index'])->name('dashmin');
-    Route::get('/absen', [AbsenController::class, 'index']);
-    Route::get('/absen/get_absen', [AbsenController::class, 'get_absen']);
+    Route::get('/dashboard/admin/absen', [AbsenController::class, 'index']);
+    Route::get('/dashboard/user', [AbsenController::class, 'user']);
+    Route::get('/dashboard/user/absen/get_absen', [AbsenController::class, 'get_absen']);
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

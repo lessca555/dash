@@ -9,12 +9,17 @@ class AbsenController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Dash/Absen/Absen');
+        return Inertia::render('Dash/Admin/Absen/Absen');
+    }
+
+    public function user()
+    {
+        return Inertia::render('Dash/User/Absen', );
     }
 
     public function get_absen()
     {
-        return Inertia::render('Dash/Absen/AddAbsen');
+        return Inertia::render('Dash/User/AddAbsen');
     }
 
     public function test()

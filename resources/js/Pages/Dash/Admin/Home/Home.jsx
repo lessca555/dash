@@ -1,5 +1,5 @@
 import { React, usePage } from "react";
-import Layout from "../Layouts/Layout";
+import Layout from "../../Layouts/Layout";
 import { Link, Head } from "@inertiajs/react";
 
 const Home = () => {

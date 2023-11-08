@@ -32,7 +32,7 @@ export default function Layout({ children }) {
     return (
         <main>
             <Head title="Dashboard" />
-            <div className="flex sidex admin">
+            <div className="flex sidex user">
                 <div className="drawer">
                     <input
                         id="my-drawer"
@@ -52,24 +52,11 @@ export default function Layout({ children }) {
                                 </div>
                             </label>
                             <ul className="flex flex-col justify-center items-center">
-                                <a href="/dashboard/admin">
+                                <a href="/dashboard/user">
                                     <li
-                                        className={`p-4 mt-5 ${
-                                            currentPath === "/dashboard/admin"
-                                                ? "active"
-                                                : ""
-                                        } tooltip tooltip-right mt-5`}
-                                        data-tip="Dashboard"
-                                    >
-                                        <AiOutlineAppstore size={35} />
-                                    </li>
-                                </a>
-                                <a href="/dashboard/admin/absen">
-                                    <li
-                                        className={`p-4
+                                        className={`p-4 mt-5
                                         ${
-                                            currentPath ===
-                                            "/dashboard/admin/absen"
+                                            currentPath === "/dashboard/user"
                                                 ? "active"
                                                 : ""
                                         }
@@ -116,18 +103,6 @@ export default function Layout({ children }) {
                                     </span>
                                 </div>
                             </div>
-                            <li
-                                className={`${
-                                    currentPath === "/dashboard/admin"
-                                        ? "active"
-                                        : ""
-                                }`}
-                            >
-                                <a href="/dashboard/admin">
-                                    <AiFillAppstore size={35} />
-                                    <span>Dashboard</span>
-                                </a>
-                            </li>
                             <li
                                 className={
                                     currentPath === "/absen" ? "active" : ""

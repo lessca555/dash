@@ -1,5 +1,5 @@
 import { React, useRef, useEffect, useState } from "react";
-import Layout from "../Layouts/Layout";
+import Layout from "../Layouts/UserLayout";
 import SignatureCanvas from "react-signature-canvas";
 import Webcam from "react-webcam";
 import { Link, Head } from "@inertiajs/react";
@@ -18,17 +18,6 @@ const AddAbsen = () => {
 
     //camera/webcam functions
     const capture = () => {
-        // const imageSrc = webcamRef.current.getScreenshot();
-        // setGambar(imageSrc);
-
-        // Matikan kamera setelah mengambil gambar
-        // if (webcamRef.current.video) {
-        //     webcamRef.current.video.pause();
-        //     webcamRef.current.video.srcObject
-        //         .getTracks()
-        //         .forEach((track) => track.stop());
-        // }
-
         if (webcamRef.current) {
             const imageSrc = webcamRef.current.getScreenshot();
             setGambar(imageSrc);
